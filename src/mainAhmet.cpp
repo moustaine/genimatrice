@@ -10,7 +10,7 @@ int main()
 
 	cout << "Entrez les coordonnes de la matrice (ligne): ";
 	cin >> Crd.Cx;
-	 cout << "Entrez les coordonnes de la matrice (colonne): ";
+	cout << "Entrez les coordonnes de la matrice (colonne): ";
 	cin >> Crd.Cy;
 
 	if(Crd.Cx <10000 && Crd.Cy <10000)
