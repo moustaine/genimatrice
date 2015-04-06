@@ -13,7 +13,7 @@ int main()
 	cout << "Entrez les coordonnes de la matrice (colonne): ";
 	cin >> Crd.Cy;
 
-	if(Crd.Cx <10000 && Crd.Cy <10000)
+	if(Crd.Cx <10000 && Crd.Cy <10000) // Les valeurs rentrée ici (10000) sont a titre indicatif.
 	{
 		Crd(cx, cy);
 	}
