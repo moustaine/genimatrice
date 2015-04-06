@@ -6,20 +6,25 @@ using namespace std;
 
 int main()
 {
-/*************************FONCTIONNE
-	Matrice Mat;
+	Coordonnee Crd;
 
-	cout << " La matrice Mat()=" << Mat1 << endl;
-/*************************FONCTIONNE
-	Matrice Mat(1000,60);
+	cout << "Entrez les coordonnes de la matrice (ligne): ";
+	cin >> Crd.Cx;
+	cout << "Entrez les coordonnes de la matrice (colonne): ";
+	cin >> Crd.Cy;
 
-	cout << " La matrice Mat(1000,60)=" << Mat << endl;
-/*************************FONCTIONNE
-	Matrice Mat(1000,1000,1);
+	if(Crd.Cx <10000 && Crd.Cy <10000) // Les valeurs ici (10000) sont a titre indicatif
+	{
+		Crd(cx, cy);
+	}
+	else
+	{
+		cout << "Vous avez pas rentre les bon parametres ! ";
+	}
 
-	Mat.Sauvegarde("test.mat");
-*/
-
+	// EXPLICATION DU CODE :
+	// Dans le main de la matrice je verifie surtout que le mec a rentré les bons parametres
+	// et si tout va bien, je lance le constructeur,sinon je renvoi un message d'erreur correspondant.
 
 	return EXIT_SUCCESS;
 }
