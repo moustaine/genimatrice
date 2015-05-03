@@ -1,43 +1,71 @@
 #include "../inc/coordonnee.h"
 
+//--------------------------------------------------------------------------------------------------------------------------------------
 Coordonnee::Coordonnee(int x,int y)								//Constructeurs
 {
 	Cx = x;
 	Cy = y;
 }
 
+//--------------------------------------------------------------------------------------------------------------------------------------
 Coordonnee::~Coordonnee()									//Destructeur
-{}
+{
+}
 
+//--------------------------------------------------------------------------------------------------------------------------------------
 int Coordonnee::getCx() const									//Cx
 {
 	return Cx;
 }
 
+//--------------------------------------------------------------------------------------------------------------------------------------
 int Coordonnee::getCy() const									//Cy
 {
 	return Cy;
 }
 
-void Coordonnee::Affiche(std::ostream &flux) const						//Affichage
-{
-	flux << "(" << Cx << "|" << Cy << ")";	
-}
-
-Coordonnee & Coordonnee::operator=(const Coordonnee & A)					//Operateur =
+//--------------------------------------------------------------------------------------------------------------------------------------
+Coordonnee& Coordonnee::operator=(const Coordonnee& A)						//Operateur =
 {
 	Cx = A.Cx;
 	Cy = A.Cy;
 	return *this;
 }
 
-bool Coordonnee::operator<(const Coordonnee & A) const						//Operateur <
+//--------------------------------------------------------------------------------------------------------------------------------------
+bool Coordonnee::operator==(const Coordonnee& A) const
 {
-	return (Cx != A.Cx) ? (Cx < A.Cx) : (Cy < A.Cy);
+	if(Cx == A.Cx && Cy == A.Cy) return true;
+	else return false;
 }
 
-std::ostream &operator<<( std::ostream &flux, Coordonnee const& C)				//Operateur <<
+//--------------------------------------------------------------------------------------------------------------------------------------
+bool Coordonnee::operator!=(const Coordonnee& A) const
 {
-    C.Affiche(flux) ;
+	return !(*this == A);
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+bool Coordonnee::operator<(const Coordonnee& A) const						//Operateur <
+{
+	if(Cx < A.Cx) return true;
+	else if((Cx == A.Cx) && (Cy < A.Cy)) return true;
+	else return false;
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+std::ostream& operator<<(std::ostream& flux, const Coordonnee& A)				//Operateur <<
+{
+    flux << A.Cx << "|" << A.Cy;
     return flux;
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+std::string Coordonnee::toString() const
+{
+	std::stringstream out;
+
+	out << Cx << " " << Cy; 
+
+	return out.str();
 }

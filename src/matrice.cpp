@@ -3,46 +3,90 @@
 //-------------------------------------------------------Constructeur de matrice 
 Matrice::Matrice(int l, int c, double v)
 {
-	Ml=l;
-	Mc=c;
+	Ml = l;
+	Mc = c;
 
 	if(v != 0)
 	{
-		for(int i=0; i<Ml; i++)
+		Mcreux = false;
+		MnbZero = 0;
+
+//Création du tableau
+
+		MtabPlein = new double*[Ml];
+		for(int i = 0; i < Ml; i++)
 		{
-			for(int j=0; j<Mc; j++)
+			MtabPlein[i] = new double[Mc];
+		}
+
+//Initialisation du tableau
+		for(int i = 0; i < Ml; i++)
+		{
+			for(int j = 0; j < Mc; j++)
 			{
-				Mtab[Coordonnee(i,j)] = v;
+				MtabPlein[i][j] = v;
 			}
 		}
 	}
+
+	else
+	{
+		Mcreux = true;
+		MnbZero = Ml*Mc;
+	}
 }
 
-//-------------------------------------------------------Constructeur de matrice d'un fichier
-Matrice::Matrice(std::string fichier)
+//-------------------------------------------------------Constructeur de matrice par fichier
+Matrice::Matrice(std::string matrice)
 {
-	std::ifstream fichierCharger("fichier");
-	double valeur;
+	double valeur = 0;
 
-	if(fichierCharger)		//Lecture du fichier
+	MnbZero = 0;
+
+	std::ifstream fichier(matrice.c_str());
+	if(fichier)		//Lecture du fichier
 	{
-		fichierCharger >> Ml >> Mc;
-  
-		for(int i=0; i<Ml; i++)
+		fichier >> Ml >> Mc >> Mcreux;
+
+		if(!Mcreux)
 		{
-			for(int j=0; j<Mc; j++)
+//Création du tableau
+
+			MtabPlein = new double*[Ml];
+			for(int i = 0; i < Ml; i++)
 			{
-				fichierCharger >> valeur;
+				MtabPlein[i] = new double[Mc];
+			}
 
-				if(valeur != 0)
+//Initialisation du tableau
+			for(int i = 0; i < Ml; i++)
+			{
+				for(int j = 0; j < Mc; j++)
 				{
-					Mtab[Coordonnee(i,j)] = valeur;
-				}
+					fichier >> valeur;
 
+					if(valeur == 0) MnbZero++;
+
+					MtabPlein[i][j] = valeur;
+				}
 			}
 		}
 
-		fichierCharger.close();	//Fermeture du fichier
+		else
+		{
+			int l = 0, c = 0;
+
+			fichier >> MnbZero;
+
+			while(!fichier.eof())
+			{
+				fichier >> l >> c >> valeur;
+
+				MtabCreux[Coordonnee(l, c)] = valeur;
+			}
+		}
+
+		fichier.close();	//Fermeture du fichier
 	}
 
 	else
@@ -53,158 +97,325 @@ Matrice::Matrice(std::string fichier)
 
 //-------------------------------------------------------Destructeur
 Matrice::~Matrice()
-{}
+{
+	if(!Mcreux)
+	{
+		for(int i = 0; i < Ml; i++)
+		{
+			delete [] MtabPlein[i];
+		}
+
+		delete [] MtabPlein;
+	}
+}
 
 //-------------------------------------------------------Operateur
 //Comparaison
  //Operateur ==
-bool Matrice::operator==(Matrice const & M) const
+bool Matrice::operator==(const Matrice& A) const
 {
+	if((Ml == A.Ml) && (Mc == A.Mc) && (Mcreux == A.Mcreux))
+	{
+		if(Mcreux)
+		{
+			std::map <Coordonnee, double>::const_iterator it1, it2;
 
+			for(it1 = MtabCreux.begin(), it2 = A.MtabCreux.begin(); it1 != MtabCreux.end(); it1++, it2++)
+			{
+				if((it1->first != it2->first) || (it1->second != it2->second)) return false;
+			}
+		}
+		else
+		{
+			for(int i = 0; i < Ml; i++)
+			{
+				for(int j = 0; j < Mc; j++)
+				{
+					if(MtabPlein[i][j] != A.MtabPlein[i][j]) return false;
+				}
+			}
+		}
+	}
+	else return false;
+
+	return true;
 }
 
  //Operateur !=
-bool Matrice::operator!=(Matrice const & M) const
+bool Matrice::operator!=(const Matrice& A) const
 {
-
-}
-
- //Operateur <
-bool Matrice::operator<(Matrice const & M) const
-{
-
-}
-
- //Operateur >
-bool Matrice::operator>(Matrice const & M) const
-{
-
-}
-
- //Operateur <=
-bool Matrice::operator<=(Matrice const & M) const
-{
-
-}
-
- //Operateur >=
-bool Matrice::operator>=(Matrice const & M) const
-{
-
+	return !(*this == A);
 }
 
 //Arithmétique
- //Operateur +=
-Matrice& Matrice::operator+=(Matrice const &)
+
+Matrice& Matrice::operator=(const Matrice& A)
+{
+	if(Mcreux != A.Mcreux)
+	{
+		if(Mcreux)
+		{
+			MtabCreux.clear();
+		}
+		else
+		{
+			for(int i = 0; i < Ml; i++)
+			{
+				delete [] MtabPlein[i];
+			}
+
+			delete [] MtabPlein;
+
+			MtabPlein = NULL;
+		}
+	}
+
+	Ml = A.Ml;
+	Mc = A.Mc;
+	Mcreux = A.Mcreux;
+	MnbZero = A.MnbZero;
+
+	if(!Mcreux)
+	{
+
+//Création du tableau
+
+		MtabPlein = new double*[Ml];
+		for(int i = 0; i < Ml; i++)
+		{
+			MtabPlein[i] = new double[Mc];
+		}
+
+//Copie du tableau
+
+		for(int i = 0; i < Ml; i++)
+		{
+			for(int j = 0; j < Mc; j++)
+			{
+				MtabPlein[i][j] = A.MtabPlein[i][j];
+			}
+		}
+	}
+	else
+	{
+		std::map <Coordonnee, double>::const_iterator it;
+
+		for(it = A.MtabCreux.begin(); it != A.MtabCreux.end(); it++)
+		{
+			MtabCreux[it->first] = it->second;
+		}
+	}
+
+	return *this;
+}
+
+ //Operateur *= Squalaire
+Matrice& Matrice::operator*=(const double a)
+{
+	if(Mcreux)
+	{
+		if(a == 0)
+		{
+			MtabCreux.clear();
+			MnbZero = Ml*Mc;
+		}
+		else
+		{
+			std::map <Coordonnee, double>::iterator it;
+
+			for(it = MtabCreux.begin(); it != MtabCreux.end(); it++)
+			{
+				it->second *= a;
+			}
+		}
+	}
+	else
+	{
+		if(a == 0)
+		{
+			for(int i = 0; i < Ml; i++)
+			{
+				delete [] MtabPlein[i];
+			}
+
+			delete [] MtabPlein;
+
+			MtabPlein = NULL;
+
+			MnbZero = Ml*Mc;
+		}
+		else
+		{
+			for(int i = 0; i < Ml; i++)
+			{
+				for(int j = 0; j < Mc; j++)
+				{
+					MtabPlein[i][j] *= a;
+				}
+			}
+		}
+	}
+
+	return *this;
+}
+
+ //Operateur * Squalaire
+Matrice operator*(const Matrice& A, const double a)
+{
+	Matrice resultat = A;
+	return resultat *= a;
+}
+
+ //Operateur += Matrice
+Matrice& Matrice::operator+=(Matrice const & A)
 {
 
 }
 
- //Operateur -=
-Matrice& Matrice::operator-=(Matrice const &)
+ //Operateur -= Matrice
+Matrice& Matrice::operator-=(Matrice const & A)
 {
 
 }
 
- //Operateur *=
-Matrice& Matrice::operator*=(Matrice const &)
+ //Operateur *= Matrice
+Matrice& Matrice::operator*=(Matrice const & A)
 {
 
 }
 
- //Operateur +
-Matrice Matrice::operator+(Matrice const &)
+ //Operateur + Matrice
+Matrice operator+(Matrice const & A, const Matrice& B)
 {
 
 }
 
- //Operateur -
-Matrice Matrice::operator-(Matrice const &)
+ //Operateur - Matrice
+Matrice operator-(Matrice const & A, const Matrice& B)
 {
 
 }
 
- //Operateur *
-Matrice Matrice::operator*(Matrice const &)
+ //Operateur * Matrice
+Matrice operator*(Matrice const & A, const Matrice& B)
 {
 
 }
 
 //-------------------------------------------------------Fonction
  //Affiche la matrice
-void Matrice::Affiche(std::ostream &flux) const
+std::ostream& operator<<(std::ostream& flux, const Matrice& A)
 {
-	std::map <Coordonnee, double>::const_iterator it;
+	bool tailleAffichable = ((A.Ml <= 40) && (A.Mc <= 15));
 
-	if(Mc <=  60) //Test du nombre de colonne
+	if(A.Mcreux)
 	{
-		for(int i=0; i<Ml; i++)
+//Affichage Matrice Creuse
+		std::map <Coordonnee, double>::const_iterator it;
+		it = A.MtabCreux.begin();
+
+		if(tailleAffichable)
 		{
-			for(int j=0; j<Mc; j++)
+	//Affichage petite Matrice
+			for(int i = 0; i < A.Ml; i++)
 			{
-				it = Mtab.find(Coordonnee(i,j));
-				if(it != Mtab.end())
+				for(int j = 0; j < A.Mc; j++)
 				{
-					flux << it->second << " ";
+					if(it->first == Coordonnee(i, j) && it != A.MtabCreux.end())
+					{
+						flux << it->second << "\t";
+
+						it++;
+					}
+					else flux << "0\t";
 				}
-			
-				else
-				{
-					flux << "0 ";
-				}
-			}
 		
-			flux << std::endl;
+				flux << std::endl;
+			}
 		}
-	}
-
-	else
-	{
-		for(int i=0; i<Ml; i++)
+		else
 		{
-			for(int j=0; j<Mc; j++)
+	//Affichage grande Matrice
+
+			if(it == A.MtabCreux.end())
 			{
-				it = Mtab.find(Coordonnee(i,j));
-				if(it != Mtab.end())
+				flux << "Toutes les cases sont à 0";
+			}
+			else
+			{
+				for(it = A.MtabCreux.begin(); it != A.MtabCreux.end(); it++)
 				{
 					flux << it->first << " = " << it->second << std::endl;
 				}
-			
-				else
+			}
+		}
+	}
+	else
+	{
+//Affichage Matrice Pleine
+		if(tailleAffichable)
+		{
+	//Affichage petite Matrice
+			for(int i = 0; i < A.Ml; i++)
+			{
+				for(int j = 0; j < A.Mc; j++)
 				{
-					flux << "(" << i << "|" << j << ") = 0 " << std::endl;
+					flux << A.MtabPlein[i][j] << "\t";
+				}
+
+				flux << std::endl;
+			}
+		}
+		else
+		{
+	//Affichage grande Matrice
+			for(int i = 0; i < A.Ml; i++)
+			{
+				for(int j = 0; j < A.Mc; j++)
+				{
+					flux << i << "|" << j << " = " << A.MtabPlein[i][j] << std::endl;
 				}
 			}
-		}		
+		}
 	}
+
+	return flux;
 }
 
  //Sauvegarde la matrice
-bool Matrice::Sauvegarde(std::string nom) const
+bool Matrice::Save(std::string nom) const
 {
-	std::string nomFull = "./mat/" + nom;
+	std::string nomFull = "./mat/" + NomSave(nom);
+
 	std::ofstream fichierSave(nomFull.c_str());
 	if(fichierSave)			//Ecriture du fichier
 	{
-		std::map <Coordonnee, double>::const_iterator it;
+		fichierSave << Ml << " " << Mc << " " << Mcreux;
 
-		fichierSave << Ml << Mc;
-
-		for(int i=0; i<Ml; i++)
+		if(Mcreux)
 		{
-			for(int j=0; j<Mc; j++)
+			fichierSave << " " << MnbZero << std::endl;
+
+			std::map <Coordonnee, double>::const_iterator it;
+
+			for(it = MtabCreux.begin(); it != MtabCreux.end(); it++)
 			{
-				it = Mtab.find(Coordonnee(i,j));
-				if(it != Mtab.end())
-				{
-					fichierSave << it->second << " ";
-				}
-			
-				else
-				{
-					fichierSave << "0 ";
-				}
+				fichierSave << it->first.toString() << " " << it->second << std::endl;
 			}
+		}
+		else
+		{
+			fichierSave << std::endl;
+
+			for(int i = 0; i < Ml; i++)
+			{
+				for(int j = 0; j < Mc; j++)
+				{
+					fichierSave << MtabPlein[i][j] << " ";
+				}
+
+				fichierSave << std::endl;
+			}			
 		}
 
 		fichierSave.close();	//Fermeture du fichier
@@ -214,15 +425,23 @@ bool Matrice::Sauvegarde(std::string nom) const
 	return false;
 }
 
+ //Envoie le nom de la sauvegarde
+std::string Matrice::NomSave(std::string nom) const
+{
+	std::stringstream out;
+
+	out << Ml << "-" << Mc << "-" << nom << ".mat"; 
+
+	return out.str();
+}
+
  //Transpose la matrice
 bool Matrice::Transpose()
 {
 
 }
 
- //Operateur <<
-std::ostream &operator<<( std::ostream & flux, Matrice const & M)
+bool Matrice::Traduit()
 {
-	M.Affiche(flux);
-	return flux;
+
 }

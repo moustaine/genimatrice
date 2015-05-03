@@ -2,28 +2,30 @@
 #define COOR_H
 
 #include <iostream>
+#include <sstream>
 
 class Coordonnee
 {
 protected :
-	int Cx;								//Position en ligne
-	int Cy;								//Position en colonne
+	int Cx;		//Position en ligne
+	int Cy;		//Position en colonne
 public :
 
-	Coordonnee(int = 0,int = 0);					//Constructeurs
+	Coordonnee(int = 0,int = 0);						//Constructeurs
+	~Coordonnee();								//Destructeur
+
+	int getCx() const;							//Cx
+	int getCy() const;							//Cy
 	
-	~Coordonnee();							//Destructeur
+	Coordonnee& operator=(const Coordonnee&);				//Operateur =
+	bool operator==(const Coordonnee&) const;				//Operateur ==
+	bool operator!=(const Coordonnee&) const;				//Operateur !=
+	bool operator<(const Coordonnee&) const;				//Operateur <
+	friend std::ostream& operator<<(std::ostream&, const Coordonnee&);	//Operateur <<
 
-	int getCx() const;						//Cx
-	int getCy() const;						//Cy
-
-	void Affiche(std::ostream &) const;				//Affichage
-	
-	Coordonnee & operator=(const Coordonnee &);			//Operateur =
-	bool operator<(const Coordonnee &) const;			//Operateur <
-
+	std::string toString() const;						//Retourne les coordonnées en string
 };
 
-std::ostream &operator<<( std::ostream &, Coordonnee const&);		//Operateur <<
+
 
 #endif //COOR_H

@@ -1,30 +1,55 @@
 #include <iostream>
 #include <cstdlib>
+
 #include "../inc/matrice.h"
 
 using namespace std;
 
 int main()
 {
-	Coordonnee Crd;
+	system("clear");
 
-	cout << "Entrez les coordonnes de la matrice (ligne): ";
-	cin >> Crd.Cx;
-	cout << "Entrez les coordonnes de la matrice (colonne): ";
-	cin >> Crd.Cy;
+//Test constructeur nouveau
 
-	if(Crd.Cx <10000 && Crd.Cy <10000) // Les valeurs ici (10000) sont a titre indicatif
-	{
-		Crd(cx, cy);
-	}
-	else
-	{
-		cout << "Vous avez pas rentre les bon parametres ! ";
-	}
+	Matrice A(5, 5);
+	Matrice B(10, 10, 1);
 
-	// EXPLICATION DU CODE :
-	// Dans le main de la matrice je verifie surtout que le mec a rentré les bons parametres
-	// et si tout va bien, je lance le constructeur,sinon je renvoi un message d'erreur correspondant.
+//Test affiche
+
+	cout << endl << A << endl << endl << B << endl;
+
+//Test sauvegarde
+
+	A.Save("A");
+	B.Save("B");
+
+//Test constructeur fichier
+
+	Matrice C("./mat/5-5-A.mat");
+	cout << C << endl;
+
+	Matrice D("./mat/10-10-B.mat");
+	cout << D << endl;
+
+//Test Comparaison
+// ==
+
+	cout << "A == B : " << (A == B) << endl;
+	cout << "B == D : " << (B == D) << endl;
+
+// !=
+
+	cout << "A != B : " << (A != B) << endl;
+	cout << "B != D : " << (B != D) << endl << endl;
+
+//Test Arithmétique
+//*= Squalaire
+	B *= 2;
+	cout << "B *= 2 : " << endl << endl << B << endl;
+
+//=
+	C = B;
+	cout << "C = B : " << endl << endl << C << endl;
 
 	return EXIT_SUCCESS;
 }
