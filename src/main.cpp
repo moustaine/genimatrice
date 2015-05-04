@@ -12,12 +12,12 @@ int main()
 //Test constructeur nouveau et affiche
 
 	cout << "Matrice A :" << endl;
-	Matrice A(true);
-//	cout << endl << A << endl;
+	Matrice A(false);
+	cout << endl << A << endl;
 
 	cout << "Matrice B :" << endl;
-	Matrice B(true);
-//	cout << endl << B << endl;	
+	Matrice B(false);
+	cout << endl << B << endl;	
 
 //Test sauvegarde
 
@@ -26,45 +26,66 @@ int main()
 
 //Test constructeur fichier
 
-	string fichier = "./mat/1000-1000-A.mat";
+	string fichier = "./mat/2-3-C.mat";
 
 	cout << "Matrice C :" << endl;
 	Matrice C(fichier);
-//	cout << C << endl;
+	cout << C << endl;
 
-	fichier = "./mat/1000-1000-B.mat";
+	fichier = "./mat/3-2-D.mat";
 
 	cout << "Matrice D :" << endl;
 	Matrice D(fichier);
-//	cout << D << endl;
+	cout << D << endl;
+
+//Constructeur vide
+
+	cout << "Matrice E :" << endl;
+	Matrice E;
+	cout << E << endl;
+
+//Test =
+
+	cout << "E = A :" << endl;
+	E = A;
+	cout << E << endl;
 
 //Test Comparaison
 // ==
 
 	cout << "A == B : " << (A == B) << endl;
-	cout << "B == D : " << (B == D) << endl;
+	cout << "A == E : " << (A == E) << endl;
 
 // !=
 
 	cout << "A != B : " << (A != B) << endl;
-	cout << "B != D : " << (B != D) << endl << endl;
+	cout << "A != E : " << (A != E) << endl << endl;
 
 //Test Arithmétique
-//*= Squalaire
-	B *= 2;
-//	cout << "B *= 2 : " << endl << endl << B << endl;
 
-//= et * Squalaire
-	C = B * 2;
-//	cout << "C = B * B : " << endl << endl << C << endl;
+// *= Squalaire
+	A *= 5;
+	cout << "A *= 5 : " << endl << endl << A << endl;
 
-//+ Matrice
-	D = B + C;
-//	cout << "D = B + C : " << endl << endl << D << endl;
+// / Squalaire
+	A = A / 5;
+	cout << "A = A / 5 : " << endl << endl << A << endl;
 
-//- Matrice
-	D = B - C;
-//	cout << "D = B - C : " << endl << endl << D << endl;
+// + Matrice
+	A = A + B;
+	cout << "A = A + B : " << endl << endl << A << endl;
+
+// -= Matrice
+	A -= B;
+	cout << "A -= B : " << endl << endl << A << endl;
+
+// * Matrice
+	C *= D;
+	cout << "C *= D : " << endl << endl << C << endl;
+
+//Transpose
+	A.Transpose();
+	cout << "A^t : " << endl << endl << A << endl;
 
 	return EXIT_SUCCESS;
 }

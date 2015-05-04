@@ -23,6 +23,7 @@ private:
 
 public:
 //Constructeurs
+	Matrice();								//Constructeur matrice vide
 	Matrice(const bool);							//Constructeur de matrice
 	Matrice(const std::string);						//Constructeur de matrice par fichier
 //Destructeur
@@ -36,6 +37,8 @@ public:
 
 	Matrice& operator*=(const double);					//Operateur *= Squalaire
 	friend Matrice operator*(const Matrice&, const double);			//Operateur * Squalaire
+	Matrice& operator/=(const double);					//Operateur /= Squalaire
+	friend Matrice operator/(const Matrice&, const double);			//Operateur / Squalaire
 
 	Matrice& operator+=(const Matrice&);					//Operateur += Matrice
 	Matrice& operator-=(const Matrice&);					//Operateur -= Matrice
@@ -46,7 +49,7 @@ public:
 //Fonctions
 	friend std::ostream &operator<<( std::ostream &, Matrice const &);	//Operateur <<
 	bool Save(std::string) const;						//Sauvegarde la matrice
-	bool Transpose();							//Transpose la matrice
+	Matrice& Transpose();							//Transpose la matrice
 };
 
 

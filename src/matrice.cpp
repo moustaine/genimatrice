@@ -1,5 +1,12 @@
 #include "../inc/matrice.h"
 
+//-------------------------------------------------------Constructeur de matrice vide
+Matrice::Matrice()
+{
+	Ml = 1;
+	Mc = 1;
+}
+
 //-------------------------------------------------------Constructeur de matrice
 Matrice::Matrice(const bool initialisation)
 {
@@ -126,9 +133,11 @@ bool Matrice::operator==(const Matrice& A) const
 	{
 		std::map <Coordonnee, double>::const_iterator it, itA;
 
+		if((Mtab.empty()) && !(A.Mtab.empty())) return false;
+
 		for(it = Mtab.begin(), itA = A.Mtab.begin(); it != Mtab.end(); it++, itA++)
 		{
-			if((it->first != itA->first) && (it->second != itA->second)) return false;
+			if(!((it->first == itA->first) && (it->second == itA->second))) return false;
 		}
 	}
 	else return false;
@@ -143,7 +152,7 @@ bool Matrice::operator!=(const Matrice& A) const
 }
 
 //Arithmétique
-
+ //Operateur =
 Matrice& Matrice::operator=(const Matrice& A)
 {
 	Ml = A.Ml;
@@ -188,33 +197,77 @@ Matrice operator*(const Matrice& A, const double a)
 	return resultat *= a;
 }
 
+ //Operateur /= Squalaire
+Matrice& Matrice::operator/=(const double a)
+{
+	if(a == 0)
+	{
+		Mtab.clear();
+	}
+	else
+	{
+		std::map <Coordonnee, double>::iterator it;
+
+		for(it = Mtab.begin(); it != Mtab.end(); it++)
+		{
+			it->second /= a;
+		}
+	}
+
+	return *this;
+}
+
+ //Operateur / Squalaire
+Matrice operator/(const Matrice& A, const double a)
+{
+	Matrice resultat = A;
+	return resultat /= a;
+}
+
  //Operateur += Matrice
 Matrice& Matrice::operator+=(const Matrice& A)
 {
-	if(Ml == A.Ml && Mc == A.Mc)
+	if(Mtab.empty())
 	{
-		std::map <Coordonnee, double>::iterator it;
-		std::map <Coordonnee, double>::const_iterator itA;
+		*this = A;
+	}
+	else
+	{
+		if(Ml == A.Ml && Mc == A.Mc && !A.Mtab.empty())
+		{
+			std::map <Coordonnee, double>::iterator it;
+			std::map <Coordonnee, double>::const_iterator itA;
 
 //Addition de chaque cases
 
-		it = Mtab.begin();
-		itA = A.Mtab.begin();
+			it = Mtab.begin();
+			itA = A.Mtab.begin();
 
-		while(itA != A.Mtab.end())
-		{
-			if(it->first == itA->first)
+			for(int i = 0; i < Ml; i++)
 			{
-				it->second += itA->second;
+				for(int j = 0; j < Mc; j++)
+				{
+					if(it->first == Coordonnee(i, j))
+					{
+						if(itA->first == Coordonnee(i, j))
+						{
+							it->second += itA->second;
 
-				it++;
-				itA++;
-			}
-			else if(itA->first < it->first)
-			{
-				Mtab[itA->first] = itA->second;
+							itA++;
+						}
 
-				itA++;
+						it++;
+					}
+					else
+					{
+						if(itA->first == Coordonnee(i, j))
+						{
+							Mtab[itA->first] = itA->second;
+
+							itA++;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -225,30 +278,47 @@ Matrice& Matrice::operator+=(const Matrice& A)
  //Operateur -= Matrice
 Matrice& Matrice::operator-=(const Matrice& A)
 {
-	if(Ml == A.Ml && Mc == A.Mc)
+	if(Mtab.empty())
 	{
-		std::map <Coordonnee, double>::iterator it;
-		std::map <Coordonnee, double>::const_iterator itA;
+		*this = A*-1;
+	}
+	else
+	{
+		if(Ml == A.Ml && Mc == A.Mc && !A.Mtab.empty())
+		{
+			std::map <Coordonnee, double>::iterator it;
+			std::map <Coordonnee, double>::const_iterator itA;
 
 //Soustraction de chaque cases
 
-		it = Mtab.begin();
-		itA = A.Mtab.begin();
+			it = Mtab.begin();
+			itA = A.Mtab.begin();
 
-		while(itA != A.Mtab.end())
-		{
-			if(it->first == itA->first)
+			for(int i = 0; i < Ml; i++)
 			{
-				it->second -= itA->second;
+				for(int j = 0; j < Mc; j++)
+				{
+					if(it->first == Coordonnee(i, j))
+					{
+						if(itA->first == Coordonnee(i, j))
+						{
+							it->second -= itA->second;
 
-				it++;
-				itA++;
-			}
-			else if(itA->first < it->first)
-			{
-				Mtab[itA->first] = -itA->second;
+							itA++;
+						}
 
-				itA++;
+						it++;
+					}
+					else
+					{
+						if(itA->first == Coordonnee(i, j))
+						{
+							Mtab[itA->first] = -itA->second;
+
+							itA++;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -260,6 +330,111 @@ Matrice& Matrice::operator-=(const Matrice& A)
 Matrice& Matrice::operator*=(const Matrice& A)
 {
 
+	if(Ml == A.Mc && Mc == A.Ml)
+	{
+
+//Création d'un tableau temporaire de la première matrice
+
+		double **tmpT = new double*[Ml];
+		for(int i = 0; i < Ml; i++)
+		{
+			tmpT[i] = new double[Mc];
+		}
+
+//Copie de la première matrice
+
+		std::map <Coordonnee, double>::const_iterator itT;
+		itT = Mtab.begin();
+
+		for(int i = 0; i < Ml; i++)
+		{
+			for(int j = 0; j < Mc; j++)
+			{
+				if(itT == Mtab.end()) tmpT[i][j] = 0;
+				else
+				{
+					if(itT->first == Coordonnee(i, j))
+					{
+						tmpT[i][j] = itT->second;
+						itT++;
+					}
+					else tmpT[i][j] = 0;
+				}
+			}
+		}
+
+//Création d'un tableau temporaire de la seconde matrice
+
+		double **tmpA = new double*[A.Ml];
+		for(int i = 0; i < A.Ml; i++)
+		{
+			tmpA[i] = new double[A.Mc];
+		}
+
+//Copie de la seconde matrice
+
+		std::map <Coordonnee, double>::const_iterator itA;
+		itA = A.Mtab.begin(); 
+
+		for(int i = 0; i < A.Ml; i++)
+		{
+			for(int j = 0; j < A.Mc; j++)
+			{
+				if(itA == A.Mtab.end()) tmpA[i][j] = 0;
+				else
+				{
+					if(itA->first == Coordonnee(i, j))
+					{
+						tmpA[i][j] = itA->second;
+						itA++;
+					}
+					else tmpA[i][j] = 0;
+				}
+			}
+		}
+
+//Modification de la première matrice
+
+		Mc = A.Mc;
+		Mtab.clear();
+
+//Multiplication des matrices
+
+		for(int i = 0; i < Ml; i++)//ligne
+		{
+			for(int j = 0; j < Mc; j++)//colonne
+			{
+				double tmp = 0;
+
+				for(int k = 0; k < A.Ml; k++)//ligne de T et colonne de A
+				{
+					tmp += (tmpT[i][k] * tmpA[k][j]);
+				}
+
+				Mtab[Coordonnee(i, j)] = tmp;
+			}
+		}
+
+//Suppression première matrice temporaire
+
+		for(int i = 0; i < Ml; i++)
+		{
+			delete [] tmpT[i];
+		}
+
+		delete [] tmpT;
+
+//Suppression seconde matrice temporaire
+
+		for(int i = 0; i < A.Ml; i++)
+		{
+			delete [] tmpA[i];
+		}
+
+		delete [] tmpA;
+	}
+
+	return *this;
 }
 
  //Operateur + Matrice
@@ -279,7 +454,8 @@ Matrice operator-(const Matrice& A, const Matrice& B)
  //Operateur * Matrice
 Matrice operator*(const Matrice& A, const Matrice& B)
 {
-
+	Matrice resultat = A;
+	return resultat *= B;
 }
 
 //-------------------------------------------------------Fonction
@@ -365,7 +541,64 @@ std::string Matrice::NomSave(std::string nom) const
 }
 
  //Transpose la matrice
-bool Matrice::Transpose()
+Matrice& Matrice::Transpose()
 {
+//Création d'un tableau temporaire de la matrice
 
+	double **tmp = new double*[Ml];
+	for(int i = 0; i < Ml; i++)
+	{
+		tmp[i] = new double[Mc];
+	}
+
+//Copie de la matrice
+
+	std::map <Coordonnee, double>::const_iterator it;
+	it = Mtab.begin();
+
+	for(int i = 0; i < Ml; i++)
+	{
+		for(int j = 0; j < Mc; j++)
+		{
+			if(it == Mtab.end()) tmp[i][j] = 0;
+			else
+			{
+				if(it->first == Coordonnee(i, j))
+				{
+					tmp[i][j] = it->second;
+					it++;
+				}
+				else tmp[i][j] = 0;
+			}
+		}
+	}
+
+//Transposer de la matrice
+
+	Mtab.clear();
+
+	for(int i = 0; i < Ml; i++)
+	{
+		for(int j = 0; j < Mc; j++)
+		{
+			if(tmp[i][j] != 0)
+			{
+				Mtab[Coordonnee(j, i)] = tmp[i][j];
+			}
+		}
+	}
+
+	int ml = Ml;
+
+	Ml = Mc;
+	Mc = ml;
+
+//Suppression matrice temporaire
+
+		for(int i = 0; i < Mc; i++)
+		{
+			delete [] tmp[i];
+		}
+
+		delete [] tmp;
 }
