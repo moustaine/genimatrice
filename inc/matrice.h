@@ -6,8 +6,10 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cstdlib>
 
 #include "coordonnee.h"
+#include "couleur.h"
 
 
 class Matrice
@@ -15,17 +17,14 @@ class Matrice
 private:
 	int Ml;					//Nb ligne
 	int Mc;					//Nb Colonne
-	bool Mcreux;				//Matrice Creuse(true) ou Matrice Pleine(false)
-	int MnbZero;				//Nb de zero
-	std::map<Coordonnee, double> MtabCreux;	//Matrice Creuse
-	double **MtabPlein;			//Matrice Pleine
+	std::map<Coordonnee, double> Mtab;	//Matrice Creuse
 
 	std::string NomSave(std::string) const;					//Envoie le nom de la sauvegarde
 
 public:
 //Constructeurs
-	Matrice(int = 1, int = 1, double = 0);					//Constructeur de matrice
-	Matrice(std::string);							//Constructeur de matrice par fichier
+	Matrice(const bool);							//Constructeur de matrice
+	Matrice(const std::string);						//Constructeur de matrice par fichier
 //Destructeur
 	~Matrice();								//Destructeur
 //Operateur
@@ -48,7 +47,6 @@ public:
 	friend std::ostream &operator<<( std::ostream &, Matrice const &);	//Operateur <<
 	bool Save(std::string) const;						//Sauvegarde la matrice
 	bool Transpose();							//Transpose la matrice
-	bool Traduit();								//Si on a une Matrice Creuse on passe a Matrice Pleine et inversement
 };
 
 

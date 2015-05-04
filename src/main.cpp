@@ -9,14 +9,15 @@ int main()
 {
 	system("clear");
 
-//Test constructeur nouveau
+//Test constructeur nouveau et affiche
 
-	Matrice A(5, 5);
-	Matrice B(10, 10, 1);
+	cout << "Matrice A :" << endl;
+	Matrice A(true);
+//	cout << endl << A << endl;
 
-//Test affiche
-
-	cout << endl << A << endl << endl << B << endl;
+	cout << "Matrice B :" << endl;
+	Matrice B(true);
+//	cout << endl << B << endl;	
 
 //Test sauvegarde
 
@@ -25,11 +26,17 @@ int main()
 
 //Test constructeur fichier
 
-	Matrice C("./mat/5-5-A.mat");
-	cout << C << endl;
+	string fichier = "./mat/1000-1000-A.mat";
 
-	Matrice D("./mat/10-10-B.mat");
-	cout << D << endl;
+	cout << "Matrice C :" << endl;
+	Matrice C(fichier);
+//	cout << C << endl;
+
+	fichier = "./mat/1000-1000-B.mat";
+
+	cout << "Matrice D :" << endl;
+	Matrice D(fichier);
+//	cout << D << endl;
 
 //Test Comparaison
 // ==
@@ -45,11 +52,19 @@ int main()
 //Test Arithmétique
 //*= Squalaire
 	B *= 2;
-	cout << "B *= 2 : " << endl << endl << B << endl;
+//	cout << "B *= 2 : " << endl << endl << B << endl;
 
-//=
-	C = B;
-	cout << "C = B : " << endl << endl << C << endl;
+//= et * Squalaire
+	C = B * 2;
+//	cout << "C = B * B : " << endl << endl << C << endl;
+
+//+ Matrice
+	D = B + C;
+//	cout << "D = B + C : " << endl << endl << D << endl;
+
+//- Matrice
+	D = B - C;
+//	cout << "D = B - C : " << endl << endl << D << endl;
 
 	return EXIT_SUCCESS;
 }
