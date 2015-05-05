@@ -108,7 +108,7 @@ int main()
 	cout << "A^t : " << endl << endl << A << endl;
 	
 // Insert
-	A.Insert(1,1,5);
+	A.Insert(0,0,5);
 	cout << "Ligne : 1" << "\t" << "Colonne : 1" << "\t" << "Nouvelle Valeur : 5" << endl << endl << A << endl;
 
 	return EXIT_SUCCESS;
