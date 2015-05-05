@@ -19,7 +19,7 @@ private:
 	int Mc;					//Nb Colonne
 	std::map<Coordonnee, double> Mtab;	//Matrice Creuse
 
-	std::string NomSave(std::string) const;					//Envoie le nom de la sauvegarde
+
 
 public:
 //Constructeurs
@@ -49,7 +49,9 @@ public:
 //Fonctions
 	friend std::ostream &operator<<( std::ostream &, Matrice const &);	//Operateur <<
 	bool Save(std::string) const;						//Sauvegarde la matrice
+	std::string NomSave(std::string) const;					//Envoie le nom de la sauvegarde
 	Matrice& Transpose();							//Transpose la matrice
+	void Insert(int, int, double);						//Insere une valeur dans la case choisie
 };
 
 

@@ -496,10 +496,7 @@ std::ostream& operator<<(std::ostream& flux, const Matrice& A)
 		}
 		else
 		{
-			for(it = A.Mtab.begin(); it != A.Mtab.end(); it++)
-			{
-				flux << it->first << " = " << it->second << std::endl;
-			}
+			flux << "Matrice trop grande pour être affichee";
 		}
 	}
 
@@ -602,3 +599,14 @@ Matrice& Matrice::Transpose()
 
 		delete [] tmp;
 }
+
+ //Insere une valeur dans la case choisie
+void Matrice::Insert(int l, int c, double v)
+{
+	std::map <Coordonnee, double>::iterator it;
+	it = Mtab.find(Coordonnee(l, c));
+
+	if(it == Mtab.end()) Mtab[Coordonnee(l, c)] = v;
+	else it->second = v;
+}
+

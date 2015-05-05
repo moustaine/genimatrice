@@ -20,8 +20,8 @@
 #define bleuT	"\033[38;5;4m"
 #define violetT	"\033[38;5;5m"
 #define grisT	"\033[38;5;8m"
-#define orangeT	"\033[48;5;172m"
-#define roseT	"\033[48;5;169m"
+#define orangeT	"\033[38;5;172m"
+#define roseT	"\033[38;5;169m"
 
 //RAZ
 
