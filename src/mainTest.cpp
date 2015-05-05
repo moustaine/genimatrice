@@ -66,22 +66,42 @@ int main()
 // *= Squalaire
 	A *= 5;
 	cout << "A *= 5 : " << endl << endl << A << endl;
-
+	
+// * Squalaire
+	A = A * 5;
+	cout << "A = A * 5 : " << endl << endl << A << endl;
+	
+// /= Squalaire
+	A /= 5;
+	cout << "A /= 5 : " << endl << endl << A << endl; 
+	
 // / Squalaire
 	A = A / 5;
 	cout << "A = A / 5 : " << endl << endl << A << endl;
 
+// += Matrice
+	A += B;
+	cout << "A += B : " << endl << endl << A << endl;
+
 // + Matrice
 	A = A + B;
 	cout << "A = A + B : " << endl << endl << A << endl;
+	
+// - Matrice
+	A = A - B;
+	cout << "A = A - B : " << endl << endl << A << endl;
 
 // -= Matrice
 	A -= B;
 	cout << "A -= B : " << endl << endl << A << endl;
 
-// * Matrice
+// *= Matrice
 	C *= D;
 	cout << "C *= D : " << endl << endl << C << endl;
+	
+// * Matrice
+	C = C * D;
+	cout << "C = C * D : " << endl << endl << C << endl;
 
 //Transpose
 	A.Transpose();
