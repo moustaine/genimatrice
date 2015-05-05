@@ -103,9 +103,13 @@ int main()
 	C = C * D;
 	cout << "C = C * D : " << endl << endl << C << endl;
 
-//Transpose
+// Transpose
 	A.Transpose();
 	cout << "A^t : " << endl << endl << A << endl;
+	
+// Insert
+	A.Insert(1,1,5);
+	cout << "Ligne : 1" << "\t" << "Colonne : 1" << "\t" << "Nouvelle Valeur : 5" << endl << endl << A << endl;
 
 	return EXIT_SUCCESS;
 }
