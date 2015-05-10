@@ -14,6 +14,7 @@
 	void afficheTitreGenimatrice();					//Affiche le grand titre Genimatrice
 	void afficheTitreMP();						//Affiche Le titre du Menu Principal
 	void afficheTitreCrM();						//Affiche Le titre de Création de matrice
+	void afficheTitreMM();						//Affiche Le titre de Modification de matrice
 	void afficheTitreCaM();						//Affiche Le titre de Calcul de matrice
 	void afficheTitreTM();						//Affiche Le titre de Transposé de matrice
 	void afficheTitreChM();						//Affiche Le titre de Selection de matrice
@@ -21,6 +22,7 @@
 
 	void afficheMP(std::string&);					//Affiche Le Menu Principal
 	void afficheCrM(std::string&);					//Affiche Le Menu Création de matrice
+	void afficheMM(std::string&);					//Affiche Le Menu Modification de matrice
 	void afficheCaM(std::string&);					//Affiche Le Menu Calcul de matrice
 	void afficheTM(std::string&);					//Affiche Le Menu Transposé de matrice
 	int afficheSM(std::string&, const int);				//Affiche Le Menu Selection de matrice
