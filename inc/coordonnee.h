@@ -21,6 +21,9 @@ public :
 	bool operator==(const Coordonnee&) const;				//Operateur ==
 	bool operator!=(const Coordonnee&) const;				//Operateur !=
 	bool operator<(const Coordonnee&) const;				//Operateur <
+	bool operator>(const Coordonnee&) const;				//Operateur >
+	bool operator<=(const Coordonnee&) const;				//Operateur <=
+	bool operator>=(const Coordonnee&) const;				//Operateur >=
 	friend std::ostream& operator<<(std::ostream&, const Coordonnee&);	//Operateur <<
 
 	std::string toString() const;						//Retourne les coordonnées en string

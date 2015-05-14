@@ -1,13 +1,13 @@
 #include "../inc/matrice.h"
 
-//-------------------------------------------------------Constructeur de matrice vide
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice::Matrice()
 {
 	Ml = 1;
 	Mc = 1;
 }
 
-//-------------------------------------------------------Constructeur de matrice
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice::Matrice(const bool initialisation)
 {
 	std::string info = "";
@@ -90,7 +90,18 @@ Matrice::Matrice(const bool initialisation)
 	}
 }
 
-//-------------------------------------------------------Constructeur de matrice par fichier
+//--------------------------------------------------------------------------------------------------------------------------------------
+Matrice::Matrice(const int n)
+{
+	Ml = n;
+	Mc = n;
+	for(int i = 0; i < n; i++)
+	{
+		Mtab[Coordonnee(i, i)] = 1;
+	}
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice::Matrice(std::string matrice)
 {
 	double nombre = 0;
@@ -107,7 +118,7 @@ Matrice::Matrice(std::string matrice)
 		{
 			fichier >> l >> c >> nombre;
 
-			Mtab[Coordonnee(l, c)] = nombre;
+			if(nombre != 0) Mtab[Coordonnee(l, c)] = nombre;
 		}
 
 		fichier.close();//Fermeture du fichier
@@ -119,14 +130,24 @@ Matrice::Matrice(std::string matrice)
 	}
 }
 
-//-------------------------------------------------------Destructeur
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice::~Matrice()
 {
 }
 
-//-------------------------------------------------------Operateur
-//Comparaison
- //Operateur ==
+//--------------------------------------------------------------------------------------------------------------------------------------
+int Matrice::getLigne() const
+{
+	return Ml;
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+int Matrice::getColonne() const
+{
+	return Mc;
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
 bool Matrice::operator==(const Matrice& A) const
 {
 	if((Ml == A.Ml) && (Mc == A.Mc))
@@ -145,14 +166,13 @@ bool Matrice::operator==(const Matrice& A) const
 	return true;
 }
 
- //Operateur !=
+//--------------------------------------------------------------------------------------------------------------------------------------
 bool Matrice::operator!=(const Matrice& A) const
 {
 	return !(*this == A);
 }
 
-//Arithmétique
- //Operateur =
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice& Matrice::operator=(const Matrice& A)
 {
 	Ml = A.Ml;
@@ -170,7 +190,7 @@ Matrice& Matrice::operator=(const Matrice& A)
 	return *this;
 }
 
- //Operateur *= Squalaire
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice& Matrice::operator*=(const double a)
 {
 	if(a == 0)
@@ -190,14 +210,14 @@ Matrice& Matrice::operator*=(const double a)
 	return *this;
 }
 
- //Operateur * Squalaire
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice operator*(const Matrice& A, const double a)
 {
 	Matrice resultat = A;
 	return resultat *= a;
 }
 
- //Operateur /= Squalaire
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice& Matrice::operator/=(const double a)
 {
 	if(a == 0)
@@ -217,14 +237,14 @@ Matrice& Matrice::operator/=(const double a)
 	return *this;
 }
 
- //Operateur / Squalaire
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice operator/(const Matrice& A, const double a)
 {
 	Matrice resultat = A;
 	return resultat /= a;
 }
 
- //Operateur += Matrice
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice& Matrice::operator+=(const Matrice& A)
 {
 	if(Mtab.empty())
@@ -275,7 +295,7 @@ Matrice& Matrice::operator+=(const Matrice& A)
 	return *this;
 }
 
- //Operateur -= Matrice
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice& Matrice::operator-=(const Matrice& A)
 {
 	if(Mtab.empty())
@@ -326,7 +346,7 @@ Matrice& Matrice::operator-=(const Matrice& A)
 	return *this;
 }
 
- //Operateur *= Matrice
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice& Matrice::operator*=(const Matrice& A)
 {
 
@@ -437,29 +457,28 @@ Matrice& Matrice::operator*=(const Matrice& A)
 	return *this;
 }
 
- //Operateur + Matrice
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice operator+(const Matrice& A, const Matrice& B)
 {
 	Matrice resultat = A;
 	return resultat += B;
 }
 
- //Operateur - Matrice
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice operator-(const Matrice& A, const Matrice& B)
 {
 	Matrice resultat = A;
 	return resultat -= B;
 }
 
- //Operateur * Matrice
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice operator*(const Matrice& A, const Matrice& B)
 {
 	Matrice resultat = A;
 	return resultat *= B;
 }
 
-//-------------------------------------------------------Fonction
- //Affiche la matrice
+//--------------------------------------------------------------------------------------------------------------------------------------
 std::ostream& operator<<(std::ostream& flux, const Matrice& A)
 {
 	bool tailleAffichable = ((A.Ml <= 40) && (A.Mc <= 15));
@@ -503,7 +522,7 @@ std::ostream& operator<<(std::ostream& flux, const Matrice& A)
 	return flux;
 }
 
- //Sauvegarde la matrice
+//--------------------------------------------------------------------------------------------------------------------------------------
 bool Matrice::Save(std::string nom) const
 {
 	std::string nomFull = "./mat/" + NomSave(nom);
@@ -527,7 +546,7 @@ bool Matrice::Save(std::string nom) const
 	return false;
 }
 
- //Envoie le nom de la sauvegarde
+//--------------------------------------------------------------------------------------------------------------------------------------
 std::string Matrice::NomSave(std::string nom) const
 {
 	std::stringstream out;
@@ -537,7 +556,7 @@ std::string Matrice::NomSave(std::string nom) const
 	return out.str();
 }
 
- //Transpose la matrice
+//--------------------------------------------------------------------------------------------------------------------------------------
 Matrice& Matrice::Transpose()
 {
 //Création d'un tableau temporaire de la matrice
@@ -600,13 +619,39 @@ Matrice& Matrice::Transpose()
 		delete [] tmp;
 }
 
- //Insere une valeur dans la case choisie
+//--------------------------------------------------------------------------------------------------------------------------------------
 void Matrice::Insert(int l, int c, double v)
 {
 	std::map <Coordonnee, double>::iterator it;
 	it = Mtab.find(Coordonnee(l, c));
 
 	if(it == Mtab.end()) Mtab[Coordonnee(l, c)] = v;
-	else it->second = v;
+	else if(v != 0) it->second = v;
+	else Mtab.erase(it);
 }
 
+//--------------------------------------------------------------------------------------------------------------------------------------
+bool Matrice::Carre() const
+{
+	if(Ml == Mc) return true;
+	else return false;
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+bool Matrice::Null() const
+{
+	return Mtab.empty();
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+void Matrice::sousMatrice(const int l1, const int l2, const int c1, const int c2)
+{
+	Coordonnee C1(l1, c1), C2(l2, c2);
+
+	std::map <Coordonnee, double>::iterator it;
+
+	for(it = Mtab.begin(); it != Mtab.end(); it++)
+	{
+		if(it->first < C1 || it->first > C2 || it->first.getCy() < c1 || it->first.getCy() > c2) Mtab.erase(it);
+	}
+}
