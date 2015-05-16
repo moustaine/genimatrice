@@ -9,15 +9,23 @@ int main()
 {
 	system("clear");
 
-//Test constructeur nouveau et affiche
+//Test constructeur matrice avec initialisation et affiche
 
-	cout << "Matrice A :" << endl;
-	Matrice A(false);
+	cout << "Matrice A (Initialisation : TRUE)" << endl;
+	Matrice A(true);
 	cout << endl << A << endl;
 
-	cout << "Matrice B :" << endl;
+//Test constructeur matrice personnalisee et affiche
+
+	cout << "Matrice B (Personnalisee)" << endl;
 	Matrice B(false);
 	cout << endl << B << endl;	
+
+//Test constreucteur Matrice Identité
+
+	cout << "Matrice Identite :" << endl;
+	Matrice F(3);
+	cout << endl << F << endl ;
 
 //Test sauvegarde
 
@@ -110,6 +118,25 @@ int main()
 // Insert
 	A.Insert(0,0,5);
 	cout << "Ligne : 1" << "\t" << "Colonne : 1" << "\t" << "Nouvelle Valeur : 5" << endl << endl << A << endl;
+
+// Test Carre
+	A.Carre();
+	if(A.Carre())
+		cout << "Matrice A est carre" << endl << endl;
+	else
+		cout << "Matrice A n'est pas carre" << endl << endl;
+
+// Test Null
+	B.Null();
+	if(B.Null())
+		cout << "Matrice B est vide" << endl << endl;
+	else
+		cout << "Matrice B n'est pas vide" << endl << endl;
+
+// Sous Matrice
+	A.sousMatrice(2,3,1,4);
+	cout << "Sous-matrice de A : " << endl << "\t" << "Ligne de DEPART : 3 " << "\t" << "Ligne de FIN : 4 " << endl << "\t" << "Colonne  de DEPART : 2 " << "\t" << "Colonne de FIN : 5 " << endl << endl;
+	cout << A << endl << endl;
 
 	return EXIT_SUCCESS;
 }
