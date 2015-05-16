@@ -3,7 +3,6 @@
 Travail restant:
 -Ahmet:
   .Makefile et #include avec la librairie au lieu du .h
-  .Ajout des nouvelles fonctions dans le main test
   .Ajout des rapports de test gprof et valgrind
   
 -Meryem:
