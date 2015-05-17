@@ -1,10 +1,13 @@
-OBJ=obj/main.o obj/menu.o obj/matrice.o obj/coordonnee.o
+OBJ=obj/main.o obj/menu.o obj/libgenimatrice.a
 
 all : bin/genimatrice
 	./$<
 
 bin/genimatrice : $(OBJ)
 	g++  $^ -o $@
+
+obj/libgenimatrice.a : obj/matrice.o obj/coordonnee.o
+	ar rv $@ $^
 
 obj/main.o : inc/matrice.h
 obj/menu.o : inc/matrice.h inc/couleur.h
