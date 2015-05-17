@@ -734,9 +734,9 @@ void afficheCredit(std::string& user)
 	{
 		afficheTitreGenimatrice();
 
-		std::cout << "BY Meryem : (Secrétaire)" << std::endl;
+		std::cout << "BY Meryem Didouh : (Secrétaire)" << std::endl;
 		std::cout << "BY Benjamin Crayssac : (Développeur)" << std::endl;
-		std::cout << "BY Ahmet : (Testeur)" << std::endl;
+		std::cout << "BY Ahmet Agbektas : (Testeur)" << std::endl;
 		std::cout << "BY Khadija Moustaine : (Documentatrice)" << std::endl << std::endl;
 
 		std::cout << "\t\t   r = Retour" << std::endl;
