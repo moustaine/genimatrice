@@ -1,9 +1,7 @@
 # genimatrice
 
 Travail restant:
--Ahmet:
-  .Ajout des rapports de test gprof et valgrind
-  
+
 -Meryem:
   .Cahier des charges finalisé (ajout des nouvelles fonctions, précision des outils de test et autre)
 
